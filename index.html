@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hihi Bomba</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      html,
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .face {
+        position: relative;
+        width: 200px;
+        height: 230px;
+      }
+
+      /* Pomarańczowa czapka */
+      .hat-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: orange;
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        z-index: 1;
+      }
+
+      .hat-rect {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: orange;
+        z-index: 1;
+      }
+
+      .hat-tip {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        background: orange;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+
+      /* Szare uszy */
+      .ear {
+        position: absolute;
+        top: 125px;
+        width: 25px;
+        height: 100px;
+        background: gray;
+        z-index: 0;
+      }
+
+      .ear.left {
+        left: -25px;
+      }
+
+      .ear.right {
+        right: -25px;
+      }
+
+      /* Oczy */
+      .eye {
+        position: absolute;
+        top: 125px;
+        width: 100px;
+        height: 100px;
+        background: lightgray;
+        border-radius: 50%;
+        z-index: 3;
+      }
+
+      .eye.left {
+        left: 0;
+        transform: rotate(25deg);
+        transform-origin: center;
+      }
+
+      .eye.right {
+        right: 0;
+        transform: rotate(-25deg);
+        transform-origin: center;
+      }
+
+      .eye .lid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: gray;
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+      }
+
+      .eye .pupil {
+        position: absolute;
+        bottom: 30px;
+        left: 35px;
+        width: 30px;
+        height: 20px;
+        background: black;
+        border-radius: 0 0 30px 30px; /* półkole */
+      }
+
+      /* Beżowa dolna część twarzy */
+      .cheek {
+        position: absolute;
+        bottom: -110px;
+        width: 50%;
+        height: 50%;
+        background: #f0e5b5;
+        border-bottom-left-radius: 100px;
+        z-index: 1;
+      }
+
+      .cheek.left {
+        left: 0;
+        border-top-right-radius: 0;
+      }
+
+      .cheek.right {
+        right: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 100px;
+      }
+
+      /* Środkowa linia (nos?) */
+      .line {
+        position: absolute;
+        bottom: -110px;
+        left: 50%;
+        width: 2px;
+        height: 50%;
+        background: #d8d1a1;
+        z-index: 2;
+      }
+
+      .jumper {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="start-modal"
+      style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        color: white;
+        flex-direction: column;
+        font-family: sans-serif;
+      "
+    >
+      <h1 style="margin-bottom: 20px">Odpal HIHI Bombę!</h1>
+      <button
+        id="start-button"
+        style="
+          padding: 10px 20px;
+          font-size: 18px;
+          background: orange;
+          color: black;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+        "
+      >
+        🔥 Start 🔊
+      </button>
+    </div>
+
+    <div class="jumper">
+      <div class="face">
+        <div class="hat-top"></div>
+        <div class="hat-rect"></div>
+        <div class="hat-tip"></div>
+
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+
+        <div class="eye left">
+          <div class="lid"></div>
+          <div class="pupil"></div>
+        </div>
+        <div class="eye right">
+          <div class="lid"></div>
+          <div class="pupil"></div>
+        </div>
+
+        <div class="cheek left"></div>
+        <div class="cheek right"></div>
+        <div class="line"></div>
+      </div>
+    </div>
+    <audio id="bg-sound" src="./audio/hihi.m4a" loop></audio>
+  </body>
+
+  <script>
+    const jumper = document.querySelector(".jumper");
+    let posX = window.innerWidth / 2;
+    let posY = window.innerHeight / 2;
+    let velocityX = 2;
+    let velocityY = -15;
+    const gravity = 0.6;
+    let animationStarted = false;
+  
+    const audio = document.getElementById("bg-sound");
+  
+    const jumperHeight = 340;
+    const jumperWidth = 200;
+  
+    function randomVelocity() {
+      return {
+        x: (Math.random() - 0.5) * 10,
+        y: -(10 + Math.random() * 15),
+      };
+    }
+  
+    function animate() {
+      if (!animationStarted) return;
+  
+      velocityY += gravity;
+      posY += velocityY;
+      posX += velocityX;
+  
+      const groundY = window.innerHeight - jumperHeight;
+  
+      if (posY > groundY) {
+        posY = groundY;
+        const newVel = randomVelocity();
+        velocityY = newVel.y;
+        velocityX = newVel.x;
+      }
+  
+      if (posY < 0) {
+        posY = 0;
+        velocityY = -velocityY;
+      }
+  
+      if (posX < 0) {
+        posX = 0;
+        velocityX = -velocityX;
+      }
+  
+      if (posX > window.innerWidth - jumperWidth) {
+        posX = window.innerWidth - jumperWidth;
+        velocityX = -velocityX;
+      }
+  
+      jumper.style.transform = `translate(${posX}px, ${posY}px)`;
+      requestAnimationFrame(animate);
+    }
+  
+    document.getElementById("start-button").addEventListener("click", () => {
+      document.getElementById("start-modal").style.display = "none";
+      animationStarted = true;
+      audio.play().catch((e) =>
+        console.log("Nie udało się odtworzyć audio:", e)
+      );
+      animate();
+    });
+  </script>
+  
+</html>
