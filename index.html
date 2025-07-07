@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hihi Bomba</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
       * {
         box-sizing: border-box;
@@ -224,6 +228,21 @@
       </div>
     </div>
     <audio id="bg-sound" src="./audio/hihi.m4a" loop></audio>
+    <div
+      style="
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 20px;
+        color: black;
+        opacity: 0.8;
+        z-index: 0;
+        pointer-events: none;
+      "
+    >
+      Zrobione przez Julka 💣 i Janka 🏠
+    </div>
   </body>
 
   <script>
@@ -234,62 +253,61 @@
     let velocityY = -15;
     const gravity = 0.6;
     let animationStarted = false;
-  
+
     const audio = document.getElementById("bg-sound");
-  
+
     const jumperHeight = 340;
     const jumperWidth = 200;
-  
+
     function randomVelocity() {
       return {
         x: (Math.random() - 0.5) * 10,
         y: -(10 + Math.random() * 15),
       };
     }
-  
+
     function animate() {
       if (!animationStarted) return;
-  
+
       velocityY += gravity;
       posY += velocityY;
       posX += velocityX;
-  
+
       const groundY = window.innerHeight - jumperHeight;
-  
+
       if (posY > groundY) {
         posY = groundY;
         const newVel = randomVelocity();
         velocityY = newVel.y;
         velocityX = newVel.x;
       }
-  
+
       if (posY < 0) {
         posY = 0;
         velocityY = -velocityY;
       }
-  
+
       if (posX < 0) {
         posX = 0;
         velocityX = -velocityX;
       }
-  
+
       if (posX > window.innerWidth - jumperWidth) {
         posX = window.innerWidth - jumperWidth;
         velocityX = -velocityX;
       }
-  
+
       jumper.style.transform = `translate(${posX}px, ${posY}px)`;
       requestAnimationFrame(animate);
     }
-  
+
     document.getElementById("start-button").addEventListener("click", () => {
       document.getElementById("start-modal").style.display = "none";
       animationStarted = true;
-      audio.play().catch((e) =>
-        console.log("Nie udało się odtworzyć audio:", e)
-      );
+      audio
+        .play()
+        .catch((e) => console.log("Nie udało się odtworzyć audio:", e));
       animate();
     });
   </script>
-  
 </html>
