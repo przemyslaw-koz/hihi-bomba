@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <script
+      defer
+      src="https://monitoring.codemining.dev/script.js"
+      data-website-id="2ec15f5f-c947-4545-9907-a856ac21e9fb"
+    ></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hihi Bomba</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <div
+      id="start-modal"
+      style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        color: white;
+        flex-direction: column;
+        font-family: sans-serif;
+      "
+    >
+      <h1 style="margin-bottom: 20px">Odpal HIHI Bombę!</h1>
+      <button
+        id="start-button"
+        style="
+          padding: 10px 20px;
+          font-size: 18px;
+          background: orange;
+          color: black;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+        "
+      >
+        🔥 Start 🔊
+      </button>
+    </div>
+
+    <div class="jumper">
+      <div class="face">
+        <div class="hat-top"></div>
+        <div class="hat-rect"></div>
+        <div class="hat-tip"></div>
+
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+
+        <div class="eye left">
+          <div class="lid"></div>
+          <div class="pupil"></div>
+        </div>
+        <div class="eye right">
+          <div class="lid"></div>
+          <div class="pupil"></div>
+        </div>
+
+        <div class="cheek left"></div>
+        <div class="cheek right"></div>
+        <div class="line"></div>
+      </div>
+    </div>
+    <audio id="bg-sound" src="./audio/hihi.m4a" loop></audio>
+    <div
+      style="
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        font-family: 'Inter', sans-serif;
+        font-size: 20px;
+        color: black;
+        opacity: 0.8;
+        z-index: 0;
+        pointer-events: none;
+      "
+    >
+      Zrobione przez Julka 💣 i Janka 🏠
+    </div>
+    <script defer src="/src/script.js"></script>
+  </body>
+</html>
