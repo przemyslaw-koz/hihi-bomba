@@ -1,6 +1,10 @@
 {
     "cleanUrls": true,
     "redirects": [],
+    "rewrites": [
+      { "source": "/health", "destination": "/health.json" },
+      { "source": "/ready", "destination": "/ready.json" }
+    ],
     "headers": [
       {
         "source": "/(.*)",
